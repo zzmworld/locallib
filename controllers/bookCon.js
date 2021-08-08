@@ -2,8 +2,7 @@ var Book = require('../models/book');
 var Author = require('../models/author');
 var Genre = require('../models/genre');
 var BookInstance = require('../models/bookinstance');
-const { body, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body, validationResult } = require('express-validator');
 
 var async = require('async');
 
@@ -11,19 +10,19 @@ exports.index = function (req, res) {
 
     async.parallel({
         book_count: function (callback) {
-            Book.count({}, callback); // Pass an empty object as match condition to find all documents of this collection
+            Book.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
         },
         book_instance_count: function (callback) {
-            BookInstance.count({}, callback);
+            BookInstance.countDocuments({}, callback);
         },
         book_instance_available_count: function (callback) {
-            BookInstance.count({ status: 'Available' }, callback);
+            BookInstance.countDocuments({ status: 'Available' }, callback);
         },
         author_count: function (callback) {
-            Author.count({}, callback);
+            Author.countDocuments({}, callback);
         },
         genre_count: function (callback) {
-            Genre.count({}, callback);
+            Genre.countDocuments({}, callback);
         },
     }, function (err, results) {
         res.render('index', { title: 'Local Library Home', error: err, data: results });
@@ -112,8 +111,8 @@ exports.book_create_post = [
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
 
     // Sanitize fields (using wildcard).
-    sanitizeBody('*').trim().escape(),
-    sanitizeBody('genre.*').escape(),
+    body('*').trim().escape(),
+    body('genre.*').escape(),
     // Process request after validation and sanitization.
     (req, res, next) => {
 
@@ -231,11 +230,11 @@ exports.book_update_post = [
     body('isbn', 'ISBN must not be empty').isLength({ min: 1 }).trim(),
 
     // Sanitize fields.
-    sanitizeBody('title').trim().escape(),
-    sanitizeBody('author').trim().escape(),
-    sanitizeBody('summary').trim().escape(),
-    sanitizeBody('isbn').trim().escape(),
-    sanitizeBody('genre.*').trim().escape(),
+    body('title').trim().escape(),
+    body('author').trim().escape(),
+    body('summary').trim().escape(),
+    body('isbn').trim().escape(),
+    body('genre.*').trim().escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {

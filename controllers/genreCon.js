@@ -1,8 +1,7 @@
 var Genre = require('../models/genre');
 var Book = require('../models/book');
 var async = require('async');
-const { body, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body, validationResult } = require('express-validator');
 
 // Display list of all Genre.
 exports.genre_list = function (req, res) {
@@ -55,7 +54,7 @@ exports.genre_create_post = [
     body('name', 'Genre name required').isLength({ min: 1 }).trim(),
 
     // Sanitize (trim and escape) the name field.
-    sanitizeBody('name').trim().escape(),
+    body('name').trim().escape(),
 
     // Process request after validation and sanitization.
     (req, res, next) => {
