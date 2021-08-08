@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const mongoose = require('mongoose');
-const wiki = require('./wiki.js');
 
 
 var indexRouter = require('./routes/index');
@@ -38,7 +37,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
 
-app.use('/wiki', wiki);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
