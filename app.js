@@ -58,7 +58,7 @@ app.use(function (err, req, res, next) {
 
 module.exports = app;
 
-const mongoDB = process.env.MONGODB_URI || 'mongodb+srv://zzm:zzm@zzmdb.lsuql.mongodb.net/zzmdb?retryWrites=true&w=majority';
+const mongoDB = process.env.MONGODB_URI || 'mongodb+srv://zzm:zzm@zzmdb.lsuql.mongodb.net/zzmdb';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
